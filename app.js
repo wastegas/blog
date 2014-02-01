@@ -40,7 +40,7 @@ app.get('/', function(req, res) {
     articleProvider.findAll(function(error, docs) {
         res.render('index', {
             title: 'Blog',
-            article:docs
+            articles:docs
         });
     })
 })
