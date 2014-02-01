@@ -11,6 +11,8 @@ var path = require('path');
 
 var app = express();
 
+var AritcleProvider = require('./articleprovider-mongodb.js').ArticleProvider;
+
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
@@ -29,8 +31,19 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', routes.index);
-app.get('/users', user.list);
+var articleProvider = new ArticleProvider('localhost', 27017);
+
+// app.get('/', routes.index);
+// app.get('/users', user.list);
+
+app.get('/', function(req, res) {
+    articleProvider.findAll(function(error, docs) {
+        res.render('index', {
+            title: 'Blog',
+            article:docs
+        });
+    })
+})
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
