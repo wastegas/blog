@@ -1,0 +1,13 @@
+extends layout
+
+block content
+
+ h1= title
+ form( method="post" role="form")
+    div.form-group
+        label(for="editArticleTitle") Title
+        input(class="form-control" type="text",name="title",id="editArticleTitle")
+    div.form-group
+        label(for="editArticleBody") Body
+        textarea(class="form-control" name="body", rows=10, id="editArticleBody")
+    button.btn.btn-default(type="submit", value="Send") Submit 
