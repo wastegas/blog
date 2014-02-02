@@ -4,6 +4,8 @@ var Server = require('mongodb').Server;
 var BSON = require('mongodb').BSON;
 var ObjectID = require('mongodb').ObjectID;
 
+
+// returns an instance of the db
 ArticleProvider = function(host, port) {
     this.db= new Db('node-mongo-blog', new Server(host, port, 
                 {safe:false, auto_reconnect:true},{}),{safe:true}); 
@@ -11,6 +13,8 @@ ArticleProvider = function(host, port) {
     this.db.open(function(){});
 };
 
+// returns an instance of the collection of the db
+// if no collection, it will also create our new db neat!
 ArticleProvider.prototype.getCollection= function(callback) {
     this.db.collection('articles', function(error, article_collection) {
         if( error ) callback(error);
@@ -18,6 +22,7 @@ ArticleProvider.prototype.getCollection= function(callback) {
     });
 };
 
+// returns an array of records in the collection
 ArticleProvider.prototype.findAll = function(callback) {
     this.getCollection(function(error, article_collection ) {
         if(error) callback(error)
@@ -31,6 +36,7 @@ ArticleProvider.prototype.findAll = function(callback) {
     });
 };
 
+// returns one recored searched by _id
 ArticleProvider.prototype.findById = function(id, callback) {
     this.getCollection(function(error, article_collection) {
         if(error) callback(error)
@@ -44,6 +50,8 @@ ArticleProvider.prototype.findById = function(id, callback) {
     });
 };
 
+
+// add a record 
 ArticleProvider.prototype.save = function(articles, callback) {
     this.getCollection(function(error, article_collection) {
         if(error) callback(error)
