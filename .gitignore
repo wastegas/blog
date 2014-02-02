@@ -1,3 +1,6 @@
 # ignore backup files
 *~
+# ignore node_modules
 node_modules
+# ignore bootstrap
+public/dist/
