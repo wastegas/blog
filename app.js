@@ -36,6 +36,7 @@ var articleProvider = new ArticleProvider('localhost', 27017);
 // app.get('/', routes.index);
 // app.get('/users', user.list);
 
+// show all records
 app.get('/', function(req, res) {
     articleProvider.findAll(function(error, docs) {
         res.render('index', {
@@ -45,12 +46,14 @@ app.get('/', function(req, res) {
     })
 })
 
+// show new post page
 app.get('/blog/new', function(req, res) {
     res.render('blog_new', {
         title: 'New Post'
     });
 });
 
+// post new post
 app.post('/blog/new', function(req, res) {
     articleProvider.save({
         title: req.param('title'),
@@ -60,6 +63,26 @@ app.post('/blog/new', function(req, res) {
     })
 });
 
+// show single article to allow comments
+app.get('/blog/:id', function(req, res) {
+    articleProvider.findById(req.params.id, function(error, article) {
+        res.render('blog_show', {
+            title: article.title,
+            article: article
+        });
+    })
+})
+
+// add comment to article
+app.post('/blog/addComment', function(req, res) {
+    articleProvider.addCommentToArticle(req.param('_id'), {
+        person: req.param('person'),
+        comment: req.param('comment'),
+        created_at: new Date()
+    }, function(error, docs) {
+        res.redirect('/blog/'+req.param('_id'))
+    })
+});
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
