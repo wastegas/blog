@@ -1,0 +1,25 @@
+extends layout
+
+block content
+    div.articles
+        div.lead
+            p.lead= article.title
+        div.small
+            small= article.created_at
+        div.body
+         != article.body
+        - each comment in article.comments
+            div.comment
+                p= comment.person
+                != comment.comment
+
+        form(method="post", action="/blog/addComment", role="form")
+            input(type="hidden", name="_id", value=article._id.toHexString())
+            div.form-group
+                label(for="addCommentPerson") Author
+                input.form-control(type="text", name="person", id="addCommentPerson")
+            div.form-group
+                label(for"addCommentComment") Comment
+                textarea.form-control(name="comment", rows=10, id="addCommentComment")
+            button.btn.btn-default(type="submit", value="Send") Submit
+               
