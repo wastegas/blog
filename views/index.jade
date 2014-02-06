@@ -1,8 +1,15 @@
 extends layout
 
 block content
-  h1= title
-   - each article in articles
-        a(href="/blog/"+article._id)!= article.title
-        small= article.created_at
-        != article.body
+    div.row
+     div.col-md-2
+     div.col-md-8
+      div.blog-post.blog-main
+       h1= title
+       - each article in articles
+          div.blog-post
+            h2.blog-post-title 
+              a(href="/blog/"+article._id)!= article.title
+            p.meta-blog-post= article.created_at
+            p!= article.body
+     div.col-md-2
